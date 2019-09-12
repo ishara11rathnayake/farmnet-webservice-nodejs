@@ -7,6 +7,7 @@ const productSchema = mongoose.Schema({
   amount: { type: Number, required: true },
   location: { type: String, required: true },
   description: { type: String },
+  date: { type: Date, required: true },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

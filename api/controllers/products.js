@@ -4,7 +4,7 @@ const User = require("../models/user");
 
 exports.products_get_all = (req, res, next) => {
   Product.find()
-    .select("user name price _id productImage amount description location")
+    .select("user name price _id productImage amount description location date")
     .populate("user", "email")
     .exec()
     .then(docs => {
@@ -18,6 +18,7 @@ exports.products_get_all = (req, res, next) => {
             amount: doc.amount,
             description: doc.description,
             location: doc.location,
+            date: doc.date,
             user: doc.user,
             productImage: doc.productImage,
             request: {
@@ -51,6 +52,7 @@ exports.products_create_product = (req, res, next) => {
           message: "User not found"
         });
       }
+      console.log(req.body.date);
       const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -58,6 +60,7 @@ exports.products_create_product = (req, res, next) => {
         amount: req.body.amount,
         location: req.body.location,
         description: req.body.description,
+        date: new Date(),
         user: req.body.userId,
         productImage: req.file.path
       });
