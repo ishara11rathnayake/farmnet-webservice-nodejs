@@ -20,24 +20,19 @@ const storage = multerGoogleStorage.storageEngine({
 });
 
 const fileFilter = (req, file, cb) => {
-  console.log(file);
-  console.log(
-    "======================================================================================================================="
-  );
   //reject a file
-  // if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-  cb(null, true);
-  // } else {
-  //   cb(null, false);
-  // }
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
 };
 
 const upload = multer({
   storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 5
-  },
-  fileFilter: fileFilter
+  }
 });
 
 router.get("/", ProductController.products_get_all);

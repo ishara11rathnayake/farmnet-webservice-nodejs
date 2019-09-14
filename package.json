@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "heroku-deploy": "'git add .' 'git commit -m \"dtfjjy\"' 'git push heroku master'"
+    "start": "nodemon server.js"
   },
   "keywords": [
     "node",
