@@ -20,6 +20,7 @@ const storage = multerGoogleStorage.storageEngine({
 });
 
 const fileFilter = (req, file, cb) => {
+  console.log(req);
   console.log(
     "======================================================================================================================="
   );
