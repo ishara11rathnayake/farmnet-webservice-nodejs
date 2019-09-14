@@ -52,7 +52,8 @@ exports.products_create_product = (req, res, next) => {
       //     message: "User not found"
       //   });
       // }
-      console.log(req.body.date);
+      console.log(req.body.userId);
+      console.log(req.file);
       const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -61,8 +62,8 @@ exports.products_create_product = (req, res, next) => {
         location: req.body.location,
         description: req.body.description,
         date: new Date(),
-        user: req.body.userId
-        // productImage: req.file.path
+        user: req.body.userId,
+        productImage: req.file.path
       });
       return product.save();
     })
