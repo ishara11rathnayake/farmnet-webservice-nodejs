@@ -20,6 +20,9 @@ const storage = multerGoogleStorage.storageEngine({
 });
 
 const fileFilter = (req, file, cb) => {
+  console.log(
+    "======================================================================================================================="
+  );
   //reject a file
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
