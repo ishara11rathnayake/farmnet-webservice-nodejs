@@ -61,8 +61,8 @@ exports.products_create_product = (req, res, next) => {
         location: req.body.location,
         description: req.body.description,
         date: new Date(),
-        user: req.body.userId,
-        productImage: req.file.path
+        user: req.body.userId
+        // productImage: req.file.path
       });
       return product.save();
     })
