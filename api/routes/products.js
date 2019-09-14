@@ -25,11 +25,11 @@ const fileFilter = (req, file, cb) => {
     "======================================================================================================================="
   );
   //reject a file
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
+  // if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  //   cb(null, true);
+  // } else {
+  //   cb(null, false);
+  // }
 };
 
 const upload = multer({
