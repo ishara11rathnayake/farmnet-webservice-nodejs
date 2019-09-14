@@ -53,6 +53,11 @@ exports.products_create_product = (req, res, next) => {
       //   });
       // }
       console.log(req.body.userId);
+      console.log(req.body.name);
+      console.log(req.body.price);
+      console.log(req.body.amount);
+      console.log(req.body.location);
+      console.log(req.body.description);
       console.log(req.file);
       const product = new Product({
         _id: new mongoose.Types.ObjectId(),
