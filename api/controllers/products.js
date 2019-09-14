@@ -47,11 +47,11 @@ exports.products_get_all = (req, res, next) => {
 exports.products_create_product = (req, res, next) => {
   User.findById(req.body.userId)
     .then(user => {
-      if (!user) {
-        return res.status(404).json({
-          message: "User not found"
-        });
-      }
+      // if (!user) {
+      //   return res.status(404).json({
+      //     message: "User not found"
+      //   });
+      // }
       console.log(req.body.date);
       const product = new Product({
         _id: new mongoose.Types.ObjectId(),
