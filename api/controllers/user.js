@@ -22,6 +22,7 @@ exports.user_signup = (req, res, next) => {
             const user = new User({
               _id: new mongoose.Types.ObjectId(),
               email: req.body.email,
+              name: req.body.name,
               password: hash,
               user_type: req.body.user_type
             });
@@ -33,7 +34,7 @@ exports.user_signup = (req, res, next) => {
               },
               process.env.JWT_KEY,
               {
-                expiresIn: "1h"
+                expiresIn: "60d"
               }
             );
 
@@ -44,6 +45,7 @@ exports.user_signup = (req, res, next) => {
                 res.status(201).json({
                   message: "User created",
                   userId: user._id,
+                  name: user.name,
                   token: token
                 });
               })
@@ -83,7 +85,7 @@ exports.user_login = (req, res, next) => {
             },
             process.env.JWT_KEY,
             {
-              expiresIn: "1h"
+              expiresIn: "60d"
             }
           );
           return res.status(200).json({
