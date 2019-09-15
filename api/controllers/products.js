@@ -5,7 +5,7 @@ const User = require("../models/user");
 exports.products_get_all = (req, res, next) => {
   Product.find()
     .select("user name price _id productImage amount description location date")
-    .populate("user", "email")
+    .populate("user", "email name _id")
     .exec()
     .then(docs => {
       const response = {
