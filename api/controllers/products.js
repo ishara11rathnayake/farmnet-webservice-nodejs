@@ -116,9 +116,12 @@ exports.products_get_product = (req, res, next) => {
 
 exports.products_update_product = (req, res, next) => {
   const id = req.params.productId;
-  const updateOps = {};
-  for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value;
+  console.log(req.body);
+  const updateOps = {
+    productImage: req.file.path
+  };
+  for (const [key, value] of Object.entries(req.body)) {
+    updateOps[key] = value;
   }
   Product.updateOne({ _id: id }, { $set: updateOps })
     .exec()

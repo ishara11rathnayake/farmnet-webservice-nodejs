@@ -49,6 +49,7 @@ router.get("/:productId", ProductController.products_get_product);
 router.patch(
   "/:productId",
   checkAuth,
+  upload.single("productImage"),
   ProductController.products_update_product
 );
 

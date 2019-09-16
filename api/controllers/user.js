@@ -123,3 +123,30 @@ exports.user_delete_user = (req, res, next) => {
       });
     });
 };
+
+exports.users_update_user = (req, res, next) => {
+  const id = req.params.userId;
+  const updateOps = {
+    profileImage: req.file.path
+  };
+  for (const [key, value] of Object.entries(req.body)) {
+    updateOps[key] = value;
+  }
+  User.updateOne({ _id: id }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "User updated",
+        request: {
+          type: "GET",
+          url: "http://localhost:3000/users/" + id
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
