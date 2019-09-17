@@ -35,7 +35,7 @@ const upload = multer({
   }
 });
 
-// router.get("/", QuestionController.questions_get_all);
+router.get("/", AdvertisementController.advertisements_get_all);
 
 router.post(
   "/",
@@ -44,18 +44,19 @@ router.post(
   AdvertisementController.advertisements_create_advertisement
 );
 
-// router.get("/:questionId", QuestionController.questions_get_question);
+router.get("/:adsId", AdvertisementController.advertisements_get_advertisement);
 
-// router.delete(
-//   "/:questionId",
-//   checkAuth,
-//   QuestionController.questions_delete_question
-// );
+router.delete(
+  "/:adsId",
+  checkAuth,
+  AdvertisementController.advertisements_delete_advertisement
+);
 
-// router.patch(
-//   "/:questionId",
-//   checkAuth,
-//   QuestionController.questions_update_question
-// );
+router.patch(
+  "/:adsId",
+  checkAuth,
+  upload.single("adsImage"),
+  AdvertisementController.advertisements_update_advertisement
+);
 
 module.exports = router;

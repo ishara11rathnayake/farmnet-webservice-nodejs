@@ -64,7 +64,7 @@ exports.questions_create_question = (req, res, next) => {
             },
             request: {
               type: "GET",
-              url: "http://localhost:3000/question/" + result._id
+              url: "http://localhost:3000/questions/" + result._id
             }
           });
         })
@@ -87,6 +87,7 @@ exports.questions_get_question = (req, res, next) => {
   const id = req.params.questionId;
   Question.findById(id)
     .select("_id content hashtags date user")
+    .populate("user", "_id name profileImage")
     .exec()
     .then(doc => {
       if (doc) {
@@ -95,7 +96,7 @@ exports.questions_get_question = (req, res, next) => {
           request: {
             type: "GET",
             description: "GET_ALL_QUESTIONS",
-            url: "http://localhost:3000/question/"
+            url: "http://localhost:3000/questions/"
           }
         });
       } else {
@@ -123,7 +124,7 @@ exports.questions_update_question = (req, res, next) => {
         message: "Question updated",
         request: {
           type: "GET",
-          url: "http://localhost:3000/question/" + id
+          url: "http://localhost:3000/questions/" + id
         }
       });
     })
@@ -155,7 +156,7 @@ exports.questions_delete_question = (req, res, next) => {
               request: {
                 type: "GET",
                 description: "GET_ALL_QUESTIONS",
-                url: "http://localhost:3000/question/"
+                url: "http://localhost:3000/questions/"
               }
             });
           });
