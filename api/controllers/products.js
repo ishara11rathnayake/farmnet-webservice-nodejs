@@ -6,6 +6,7 @@ exports.products_get_all = (req, res, next) => {
   Product.find()
     .select("user name price _id productImage amount description location date")
     .populate("user", "email name _id")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       const response = {
@@ -64,21 +65,27 @@ exports.products_create_product = (req, res, next) => {
         user: req.body.userId,
         productImage: req.file.path
       });
-      return product.save();
-    })
-    .then(result => {
-      res.status(201).json({
-        message: "Created product succesfully",
-        createdProduct: {
-          name: result.name,
-          price: result.price,
-          _id: result._id,
-          request: {
-            type: "GET",
-            url: "http://localhost:3000/products/" + result._id
-          }
-        }
-      });
+
+      product
+        .save()
+        .then(result => {
+          res.status(201).json({
+            message: "Created product succesfully",
+            createdProduct: {
+              name: result.name,
+              price: result.price,
+              _id: result._id,
+              request: {
+                type: "GET",
+                url: "http://localhost:3000/products/" + result._id
+              }
+            }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ error: err });
+        });
     })
     .catch(err => {
       console.log(err);

@@ -40,6 +40,7 @@ exports.comments_create_comment = (req, res, next) => {
           message: "User not found"
         });
       }
+
       const comment = new Comment({
         _id: new mongoose.Types.ObjectId(),
         content: req.body.content,
@@ -48,12 +49,18 @@ exports.comments_create_comment = (req, res, next) => {
         product: req.body.productId,
         user: req.body.userId
       });
-      return comment.save();
-    })
-    .then(result => {
-      res.status(201).json({
-        message: "succesfully commented on the product"
-      });
+
+      comment
+        .save()
+        .then(result => {
+          res.status(201).json({
+            message: "succesfully commented on the product"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ error: err });
+        });
     })
     .catch(err => {
       console.log(err);

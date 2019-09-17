@@ -39,6 +39,7 @@ exports.likes_create_like = (req, res, next) => {
           message: "User not found"
         });
       }
+
       const like = new Like({
         _id: new mongoose.Types.ObjectId(),
         date: Date.now(),
@@ -46,12 +47,18 @@ exports.likes_create_like = (req, res, next) => {
         product: req.body.productId,
         user: req.body.userId
       });
-      return like.save();
-    })
-    .then(result => {
-      res.status(201).json({
-        message: "succesfully liked the product"
-      });
+
+      like
+        .save()
+        .then(result => {
+          res.status(201).json({
+            message: "succesfully liked the product"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ error: err });
+        });
     })
     .catch(err => {
       console.log(err);
