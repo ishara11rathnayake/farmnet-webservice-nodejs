@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 exports.questions_get_all = (req, res, next) => {
   Question.find()
-    .select("_id content hashtags date user")
+    .select("_id question description hashtags date user numberOfAnswers")
     .populate("user", "_id name profileImage")
     .exec()
     .then(docs => {
@@ -13,10 +13,12 @@ exports.questions_get_all = (req, res, next) => {
         questions: docs.map(doc => {
           return {
             _id: doc._id,
-            content: doc.content,
+            question: doc.question,
+            description: doc.description,
             hashtags: doc.hashtags,
             date: doc.date,
             user: doc.user,
+            numberOfAnswers: doc.numberOfAnswers,
             request: {
               type: "GET",
               url: "http://localhost:3000/questions/" + doc._id
@@ -43,7 +45,8 @@ exports.questions_create_question = (req, res, next) => {
 
       const question = new Question({
         _id: mongoose.Types.ObjectId(),
-        content: req.body.content,
+        question: req.body.question,
+        description: req.body.description,
         hashtags: req.body.hashtags,
         date: new Date(),
         user: req.body.userId
@@ -57,10 +60,12 @@ exports.questions_create_question = (req, res, next) => {
             message: "Question were created",
             createdQusetion: {
               _id: result._id,
-              content: result.content,
+              question: result.question,
+              description: result.description,
               hashtags: result.hashtags,
               user: result.userId,
-              date: result.date
+              date: result.date,
+              numberOfAnswers: result.numberOfAnswers
             },
             request: {
               type: "GET",
@@ -86,7 +91,7 @@ exports.questions_create_question = (req, res, next) => {
 exports.questions_get_question = (req, res, next) => {
   const id = req.params.questionId;
   Question.findById(id)
-    .select("_id content hashtags date user")
+    .select("_id question description hashtags date user numberOfAnswers")
     .populate("user", "_id name profileImage")
     .exec()
     .then(doc => {
