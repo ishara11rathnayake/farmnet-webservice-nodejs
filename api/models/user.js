@@ -14,8 +14,7 @@ const userSchema = mongoose.Schema({
   profileImage: { type: String },
   address: { type: String },
   contactNumber: { type: String },
-  dob: { type: String },
-  profileImage: { type: String, required: true }
+  dob: { type: String }
 });
 
 module.exports = mongoose.model("User", userSchema);
