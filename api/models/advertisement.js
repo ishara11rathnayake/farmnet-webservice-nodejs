@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const advertisementSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  description: { type: String, require: true },
+  adTitle: { type: String, require: true },
+  adDescription: { type: String, require: true },
+  price: { type: Number },
   adsImage: { type: String, require: true },
   contactNumber: { type: String, require: true },
   hashtags: { type: [String] },

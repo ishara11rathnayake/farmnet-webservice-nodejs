@@ -17,7 +17,9 @@ exports.advertisements_create_advertisement = (req, res, next) => {
 
       const advertisement = new Advertisement({
         _id: mongoose.Types.ObjectId(),
-        description: req.body.description,
+        adTitle: req.body.adTitle,
+        adDescription: req.body.adDescription,
+        price: req.body.price,
         hashtags: req.body.hashtags,
         contactNumber: req.body.contactNumber,
         date: new Date(),
@@ -32,7 +34,7 @@ exports.advertisements_create_advertisement = (req, res, next) => {
             message: "Advertisement were created",
             createdAdvertisement: {
               _id: result._id,
-              description: result.description,
+              adTitle: result.adTitle,
               hashtags: result.hashtags,
               user: result.userId,
               date: result.date
@@ -60,7 +62,9 @@ exports.advertisements_create_advertisement = (req, res, next) => {
 
 exports.advertisements_get_all = (req, res, next) => {
   Advertisement.find()
-    .select("_id description adsImage contactNumber hashtags date user")
+    .select(
+      "_id adTitle adDescription price adsImage contactNumber hashtags date user"
+    )
     .populate("user", "_id name profileImage")
     .exec()
     .then(docs => {
@@ -69,8 +73,10 @@ exports.advertisements_get_all = (req, res, next) => {
         advertisements: docs.map(doc => {
           return {
             _id: doc._id,
-            description: doc.description,
+            adTitle: doc.adTitle,
             hashtags: doc.hashtags,
+            adDescription: doc.adDescription,
+            price: doc.price,
             date: doc.date,
             user: doc.user,
             adsImage: doc.adsImage,
@@ -127,7 +133,9 @@ exports.advertisements_delete_advertisement = (res, req, next) => {
 exports.advertisements_get_advertisement = (req, res, next) => {
   const id = req.params.adsId;
   Advertisement.findById(id)
-    .select("_id description adsImage contactNumber hashtags date user")
+    .select(
+      "_id adTitle adDescription price adsImage contactNumber hashtags date user"
+    )
     .populate("user", "_id name profileImage")
     .exec()
     .then(doc => {
