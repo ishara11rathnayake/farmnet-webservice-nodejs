@@ -39,11 +39,8 @@ router.get("/", AdvertisementController.advertisements_get_all);
 
 router.post(
   "/",
-  console.log("========="),
   checkAuth,
-  console.log("========="),
   upload.single("adsImage"),
-  console.log("=========="),
   AdvertisementController.advertisements_create_advertisement
 );
 
