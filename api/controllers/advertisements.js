@@ -3,7 +3,6 @@ const User = require("../models/user");
 const mongoose = require("mongoose");
 
 exports.advertisements_create_advertisement = (req, res, next) => {
-  console.log("====================================");
   User.findById(req.body.userId)
     .then(user => {
       if (!user) {
