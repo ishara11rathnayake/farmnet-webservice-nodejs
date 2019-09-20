@@ -15,6 +15,8 @@ exports.advertisements_create_advertisement = (req, res, next) => {
         });
       }
 
+      console.log(req.body);
+
       const advertisement = new Advertisement({
         _id: mongoose.Types.ObjectId(),
         adTitle: req.body.adTitle,
