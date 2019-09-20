@@ -10,8 +10,8 @@ exports.advertisements_create_advertisement = (req, res, next) => {
           message: "User not found"
         });
       } else if (user.user_type != "Agri Service Provider") {
-        return res.status(500).json({
-          message: "You don't have permission to delete thise advertisement."
+        return res.status(401).json({
+          message: "You don't have permission to create advertisement."
         });
       }
 
@@ -104,8 +104,8 @@ exports.advertisements_delete_advertisement = (res, req, next) => {
     .exec()
     .then(result => {
       if (result.user._id != req.body.userId) {
-        res.status(500).json({
-          message: "You don't have permission to delete this question."
+        res.status(401).json({
+          message: "You don't have permission to delete this advertisements."
         });
       } else {
         Advertisement.deleteOne({ _id: id })
