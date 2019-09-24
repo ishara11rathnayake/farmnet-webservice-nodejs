@@ -155,7 +155,7 @@ exports.users_get_user = (req, res, next) => {
   const id = req.params.userId;
   User.findById(id)
     .select(
-      "_id email name user_type profileImage address contactNumber nic dob"
+      "_id email name user_type profileImage address contactNumber nic dob rating"
     )
     .exec()
     .then(doc => {
