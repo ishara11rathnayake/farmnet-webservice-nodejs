@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
   profileImage: { type: String },
   address: { type: String },
   contactNumber: { type: String },
+  nic: { type: String },
   dob: { type: String }
 });
 
