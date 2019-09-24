@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
   address: { type: String },
   contactNumber: { type: String },
   nic: { type: String },
-  dob: { type: String },
+  dob: { type: Date },
   rating: { type: Number, default: 0.0 }
 });
 
