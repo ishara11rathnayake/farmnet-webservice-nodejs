@@ -162,7 +162,7 @@ exports.users_get_user = (req, res, next) => {
       console.log(doc);
       if (doc) {
         res.status(200).json({
-          product: doc,
+          user: doc,
           request: {
             type: "GET",
             description: "GET_USER"
