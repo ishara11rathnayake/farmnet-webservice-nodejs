@@ -163,6 +163,10 @@ exports.users_get_user = (req, res, next) => {
       console.log(doc);
       if (doc) {
         Product.find({ user: id })
+          .select(
+            "user name price _id productImage amount description location date"
+          )
+          .populate("user", "email name _id profileImage")
           .exec()
           .then(result => {
             res.status(200).json({
