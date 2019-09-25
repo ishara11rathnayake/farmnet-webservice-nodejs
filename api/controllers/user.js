@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
+const Product = require("../models/product");
 
 exports.user_signup = (req, res, next) => {
   User.find({ email: req.body.email })
@@ -161,13 +162,22 @@ exports.users_get_user = (req, res, next) => {
     .then(doc => {
       console.log(doc);
       if (doc) {
-        res.status(200).json({
-          user: doc,
-          request: {
-            type: "GET",
-            description: "GET_USER"
-          }
-        });
+        Product.find({ user: id })
+          .exec()
+          .then(result => {
+            res.status(200).json({
+              user: doc,
+              product: result,
+              request: {
+                type: "GET",
+                description: "GET_USER"
+              }
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: err });
+          });
       } else {
         res.status(404).json({
           message: "No valid entry found for provided ID"
