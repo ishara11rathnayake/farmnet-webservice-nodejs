@@ -16,7 +16,8 @@ const userSchema = mongoose.Schema({
   contactNumber: { type: String },
   nic: { type: String },
   dob: { type: Date },
-  rating: { type: Number, default: 0.0 }
+  rating: { type: Number, default: 0.0 },
+  no_of_rated_users: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model("User", userSchema);

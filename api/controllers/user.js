@@ -149,7 +149,6 @@ exports.user_delete_user = (req, res, next) => {
 };
 
 exports.users_update_user = (req, res, next) => {
-  console.log(req.params.userId);
   let updateOps = {};
   upload(req, res, err => {
     if (req.file) {
@@ -181,6 +180,46 @@ exports.users_update_user = (req, res, next) => {
         });
       });
   });
+};
+
+exports.users_rate_user = (req, res, next) => {
+  const id = req.params.userId;
+  User.findById(id)
+    .exec()
+    .then(result => {
+      if (result) {
+        let rating = result.rating;
+        let no_of_rated_users = result.no_of_rated_users;
+
+        rating =
+          (req.body.rating + rating * result.no_of_rated_users) /
+          (result.no_of_rated_users + 1);
+
+        no_of_rated_users++;
+
+        const updateOps = {
+          rating: rating,
+          no_of_rated_users: no_of_rated_users
+        };
+
+        User.updateOne({ _id: id }, { $set: updateOps })
+          .exec()
+          .then(result => {
+            res.status(200).json({
+              message: "rate successfully"
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
+          });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: err });
+    });
 };
 
 exports.users_get_user = (req, res, next) => {
