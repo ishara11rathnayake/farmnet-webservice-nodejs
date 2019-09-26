@@ -41,12 +41,7 @@ router.post("/login", UserController.user_login);
 
 router.delete("/:userId", checkAuth, UserController.user_delete_user);
 
-router.patch(
-  "/:userId",
-  checkAuth,
-  upload.single("profileImage"),
-  UserController.users_update_user
-);
+router.patch("/:userId", checkAuth, UserController.users_update_user);
 
 router.get("/:userId", checkAuth, UserController.users_get_user);
 

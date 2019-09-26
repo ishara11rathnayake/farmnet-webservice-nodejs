@@ -5,6 +5,29 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Product = require("../models/product");
 
+const multer = require("multer");
+const multerGoogleStorage = require("multer-google-storage");
+
+const storage = multerGoogleStorage.storageEngine({
+  filename: function(req, file, cb) {
+    cb(null, "profile/" + Date.now() + file.originalname);
+  },
+  bucket: "farmnet-bucket",
+  projectId: "farmnet",
+  keyFilename: "./api/helpers/farmnet-45e7c587b679.json",
+  acl: "publicread",
+  contentType: function(req, file) {
+    return file.mimetype;
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  }
+}).single("profileImage");
+
 exports.user_signup = (req, res, next) => {
   User.find({ email: req.body.email })
     .exec()
@@ -126,30 +149,38 @@ exports.user_delete_user = (req, res, next) => {
 };
 
 exports.users_update_user = (req, res, next) => {
-  const id = req.params.userId;
-  const updateOps = {
-    profileImage: req.file.path
-  };
-  for (const [key, value] of Object.entries(req.body)) {
-    updateOps[key] = value;
-  }
-  User.updateOne({ _id: id }, { $set: updateOps })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        message: "User updated",
-        request: {
-          type: "GET",
-          url: "http://localhost:3000/users/" + id
-        }
+  console.log(req.params.userId);
+  let updateOps = {};
+  upload(req, res, err => {
+    if (req.file) {
+      updateOps = {
+        profileImage: req.file.path
+      };
+    }
+
+    const id = req.params.userId;
+
+    for (const [key, value] of Object.entries(req.body)) {
+      updateOps[key] = value;
+    }
+    User.updateOne({ _id: id }, { $set: updateOps })
+      .exec()
+      .then(result => {
+        res.status(200).json({
+          message: "User updated",
+          request: {
+            type: "GET",
+            url: "http://localhost:3000/users/" + id
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
+  });
 };
 
 exports.users_get_user = (req, res, next) => {
