@@ -30,7 +30,6 @@ exports.rating_rate_users = (req, res, next) => {
             });
           });
       } else {
-        console.log("==========");
         const ratingObject = new Rating({
           _id: new mongoose.Types.ObjectId(),
           userId: userId,
@@ -86,8 +85,6 @@ exports.ratings_get_rating = (req, res, next) => {
 exports.ratings_get_rated_user_rating = (req, res, next) => {
   userId = req.params.userId;
   ratedUserId = req.params.ratedUserId;
-  console.log(userId);
-  console.log(ratedUserId);
   Rating.find({ userId: userId, ratedUserId: ratedUserId })
     .select("ratingScore")
     .exec()
