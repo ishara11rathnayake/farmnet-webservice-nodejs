@@ -53,10 +53,33 @@ exports.articles_get_all_articles = (req, res, next) => {
     .select("_id userId articleTitle content thumbnailUrl date")
     .populate("userId", "_id name profileImage")
     .exec()
-    .then(doc => {
-      res.status(200).json({
-        articles: doc
-      });
+    .then(docs => {
+      const response = {
+        count: docs.length,
+        articles: docs.map(doc => {
+          return {
+            _id: doc._id,
+            userId: doc.userId,
+            articleTitle: doc.articleTitle,
+            content: doc.content,
+            thumbnailUrl: doc.thumbnailUrl,
+            date: doc.date,
+            request: {
+              type: "GET",
+              url:
+                "https://farmnet-app-webservice.herokuapp.com/articles/" +
+                doc._id
+            }
+          };
+        })
+      };
+      if (docs.length >= 0) {
+        res.status(200).json(response);
+      } else {
+        res.status(404).json({
+          message: "No entries found"
+        });
+      }
     })
     .catch(err => {
       console.log(err);
