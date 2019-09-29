@@ -9,8 +9,8 @@ const articleSchema = mongoose.Schema({
   },
   articleTitle: { type: String, required: true },
   content: { type: String, required: true },
-  tumbnailUrl: { type: String, required: true },
-  date: { type: Date, default: Date.now }
+  thumbnailUrl: { type: String, required: true },
+  date: { type: Date, default: new Date() }
 });
 
 module.exports = mongoose.model("Article", articleSchema);

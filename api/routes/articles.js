@@ -42,4 +42,14 @@ router.post(
   articleController.get_thumbnail_url
 );
 
+router.post("/", checkAuth, articleController.articles_create_article);
+
+router.get("/", articleController.articles_get_all_articles);
+
+router.delete(
+  "/:articleId&:userId",
+  checkAuth,
+  articleController.articles_delete_article
+);
+
 module.exports = router;
