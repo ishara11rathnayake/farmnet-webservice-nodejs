@@ -15,6 +15,7 @@ const advertisementRoutes = require("./api/routes/advertisements");
 const ratingRoutes = require("./api/routes/rating");
 const complaintRoutes = require("./api/routes/complaints");
 const articleRoutes = require("./api/routes/articles");
+const timelineRoutes = require("./api/routes/timelines");
 
 //connect to mongoDB
 mongoose.connect(
@@ -53,6 +54,7 @@ app.use("/advertisements", advertisementRoutes);
 app.use("/ratings", ratingRoutes);
 app.use("/complaints", complaintRoutes);
 app.use("/articles", articleRoutes);
+app.use("/timelines", timelineRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
