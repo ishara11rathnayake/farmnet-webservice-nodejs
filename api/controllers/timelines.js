@@ -86,6 +86,7 @@ exports.timelines_create_timeline = (req, res, next) => {
 exports.timelines_get_timelines_by_user = (req, res, next) => {
   const id = req.params.userId;
   Timeline.find({ userId: id })
+    .populate("userId", "email name _id profileImage")
     .exec()
     .then(docs => {
       res.status(200).json({
