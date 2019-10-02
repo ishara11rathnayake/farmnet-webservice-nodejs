@@ -112,7 +112,7 @@ exports.timelines_add_new_task = (req, res, next) => {
         });
       } else {
         upload(req, res, err => {
-          const task = new TaskModel({
+          let task = new TaskModel({
             _id: new mongoose.Types.ObjectId(),
             content: req.body.content,
             date: new Date()
