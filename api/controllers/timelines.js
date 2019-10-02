@@ -146,3 +146,20 @@ exports.timelines_add_new_task = (req, res, next) => {
       res.status(500).json({ error: err });
     });
 };
+
+exports.timelines_get_timeline_by_timelineId = (req, res, next) => {
+  const id = req.params.timelineId;
+
+  Timeline.findById(id)
+    .populate("userId", "email name _id profileImage")
+    .exec()
+    .then(doc => {
+      res.status(200).json({
+        timeline: doc
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+};

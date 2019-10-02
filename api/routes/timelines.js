@@ -18,4 +18,10 @@ router.patch(
   timelineController.timelines_add_new_task
 );
 
+router.get(
+  "/timeline/:timelineId",
+  checkAuth,
+  timelineController.timelines_get_timeline_by_timelineId
+);
+
 module.exports = router;

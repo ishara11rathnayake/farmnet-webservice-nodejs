@@ -4,7 +4,9 @@ const User = require("../models/user");
 
 exports.products_get_all = (req, res, next) => {
   Product.find()
-    .select("user name price _id productImage amount description location date")
+    .select(
+      "user name price _id productImage amount description location date timelineId"
+    )
     .populate("user", "email name _id profileImage")
     .sort({ date: -1 })
     .exec()
@@ -22,6 +24,7 @@ exports.products_get_all = (req, res, next) => {
             date: doc.date,
             user: doc.user,
             productImage: doc.productImage,
+            timelineId: doc.timelineId,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
@@ -63,7 +66,8 @@ exports.products_create_product = (req, res, next) => {
         description: req.body.description,
         date: new Date(),
         user: req.body.userId,
-        productImage: req.file.path
+        productImage: req.file.path,
+        timelineId: req.body.timelineId
       });
 
       product

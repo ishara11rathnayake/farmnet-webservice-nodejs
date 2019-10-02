@@ -13,7 +13,11 @@ const productSchema = mongoose.Schema({
     ref: "User",
     required: true
   },
-  productImage: { type: String, required: true }
+  productImage: { type: String, required: true },
+  timelineId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Timeline"
+  }
 });
 
 module.exports = mongoose.model("Product", productSchema);
