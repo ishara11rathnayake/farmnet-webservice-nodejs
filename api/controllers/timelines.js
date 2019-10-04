@@ -100,8 +100,7 @@ exports.timelines_get_timelines_by_user = (req, res, next) => {
 };
 
 exports.timelines_add_new_task = (req, res, next) => {
-  id = req.params.timelineId;
-  console.log(req.params.timelineId);
+  const id = req.params.timelineId;
   Timeline.findById(id)
     .select("tasks")
     .exec()

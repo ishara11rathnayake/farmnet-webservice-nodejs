@@ -234,7 +234,7 @@ exports.users_get_user = (req, res, next) => {
       if (doc) {
         Product.find({ user: id })
           .select(
-            "user name price _id productImage amount description location date"
+            "user name price _id productImage amount description location date timelineId"
           )
           .populate("user", "email name _id profileImage")
           .exec()
@@ -257,6 +257,22 @@ exports.users_get_user = (req, res, next) => {
           message: "No valid entry found for provided ID"
         });
       }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+};
+
+exports.users_get_user_by_id = (req, res, next) => {
+  const id = req.params.userId;
+  User.findById(id)
+    .select("_id name user_type profileImage")
+    .exec()
+    .then(doc => {
+      res.status(200).json({
+        user: doc
+      });
     })
     .catch(err => {
       console.log(err);
