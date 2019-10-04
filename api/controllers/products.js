@@ -174,3 +174,54 @@ exports.products_delete_product = (req, res, next) => {
       });
     });
 };
+
+exports.products_search_product = (req, res, next) => {
+  const searchText = req.params.searchText;
+  const regex = new RegExp(escapeRegex(searchText), "gi");
+  Product.find({ $or: [{ name: regex }, { location: regex }] })
+    .select(
+      "user name price _id productImage amount description location date timelineId"
+    )
+    .populate("user", "email name _id profileImage")
+    .exec()
+    .then(docs => {
+      const response = {
+        count: docs.length,
+        products: docs.map(doc => {
+          return {
+            _id: doc._id,
+            name: doc.name,
+            price: doc.price,
+            amount: doc.amount,
+            description: doc.description,
+            location: doc.location,
+            date: doc.date,
+            user: doc.user,
+            productImage: doc.productImage,
+            timelineId: doc.timelineId,
+            request: {
+              type: "GET",
+              url: "http://localhost:3000/products/" + doc._id
+            }
+          };
+        })
+      };
+      if (docs.length > 0) {
+        res.status(200).json(response);
+      } else {
+        res.status(404).json({
+          message: "No entries found"
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+const escapeRegex = text => {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};

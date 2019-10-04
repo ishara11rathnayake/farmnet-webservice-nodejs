@@ -59,4 +59,10 @@ router.delete(
   ProductController.products_delete_product
 );
 
+router.get(
+  "/search/:searchText",
+  checkAuth,
+  ProductController.products_search_product
+);
+
 module.exports = router;
