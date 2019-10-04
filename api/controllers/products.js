@@ -209,10 +209,7 @@ exports.products_search_product = (req, res, next) => {
       if (docs.length > 0) {
         res.status(200).json(response);
       } else {
-        // res.status(404).json({
-        //   message1: "No entries found"
-        // });
-        res.error({
+        res.status(404).json({
           message: "No entries found"
         });
       }
