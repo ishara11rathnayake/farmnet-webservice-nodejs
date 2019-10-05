@@ -73,7 +73,7 @@ exports.articles_get_all_articles = (req, res, next) => {
           };
         })
       };
-      if (docs.length >= 0) {
+      if (docs.length > 0) {
         res.status(200).json(response);
       } else {
         res.status(404).json({
