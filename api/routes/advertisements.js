@@ -59,4 +59,10 @@ router.patch(
   AdvertisementController.advertisements_update_advertisement
 );
 
+router.get(
+  "/search/:searchText",
+  checkAuth,
+  AdvertisementController.advertisements_search_advertisement
+);
+
 module.exports = router;

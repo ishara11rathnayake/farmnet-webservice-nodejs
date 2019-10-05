@@ -186,3 +186,45 @@ exports.advertisements_update_advertisement = (req, res, next) => {
       });
     });
 };
+
+exports.advertisements_search_advertisement = (req, res, next) => {
+  const searchText = req.params.searchText;
+  const regex = new RegExp(escapeRegex(searchText), "gi");
+  Advertisement.find({ $or: [{ hashtags: regex }, { adTitle: regex }] })
+    .select(
+      "_id adTitle adDescription price adsImage contactNumber hashtags date user"
+    )
+    .populate("user", "_id name profileImage")
+    .exec()
+    .then(docs => {
+      res.status(200).json({
+        count: docs.length,
+        advertisements: docs.map(doc => {
+          return {
+            _id: doc._id,
+            adTitle: doc.adTitle,
+            hashtags: doc.hashtags,
+            adDescription: doc.adDescription,
+            price: doc.price,
+            date: doc.date,
+            user: doc.user,
+            adsImage: doc.adsImage,
+            contactNumber: doc.contactNumber,
+            request: {
+              type: "GET",
+              url: "http://localhost:3000/advertisements/" + doc._id
+            }
+          };
+        })
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+const escapeRegex = text => {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};

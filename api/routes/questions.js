@@ -22,4 +22,16 @@ router.patch(
   QuestionController.questions_update_question
 );
 
+router.get(
+  "/search/:searchText",
+  checkAuth,
+  QuestionController.quetions_search_question
+);
+
+router.patch(
+  "/answer/:questionId",
+  checkAuth,
+  QuestionController.questions_increase_no_of_answers
+);
+
 module.exports = router;
