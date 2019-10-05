@@ -216,7 +216,10 @@ exports.questions_increase_no_of_answers = (req, res, next) => {
     .exec()
     .then(result => {
       let noOfAnswers = result.numberOfAnswers + 1;
-      Question.updateOne({ $set: { numberOfAnswers: noOfAnswers } })
+      Question.updateOne(
+        { _id: id },
+        { $set: { numberOfAnswers: noOfAnswers } }
+      )
         .then(doc => {
           res.status(200).json({
             message: "updated successfully"
