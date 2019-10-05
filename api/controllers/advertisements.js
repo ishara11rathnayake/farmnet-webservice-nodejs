@@ -67,7 +67,7 @@ exports.advertisements_get_all = (req, res, next) => {
     .select(
       "_id adTitle adDescription price adsImage contactNumber hashtags date user"
     )
-    .populate("user", "_id name profileImage")
+    .populate("user", "_id name profileImage email")
     .exec()
     .then(docs => {
       res.status(200).json({
