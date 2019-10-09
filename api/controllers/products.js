@@ -73,17 +73,26 @@ exports.products_create_product = (req, res, next) => {
       product
         .save()
         .then(result => {
-          res.status(201).json({
-            message: "Created product succesfully",
-            productId: result._id,
-            date: result.date,
-            user: result.user,
-            name: result.name,
-            request: {
-              type: "GET",
-              url: "http://localhost:3000/products/" + result._id
-            }
-          });
+          User.findById(result.user)
+            .exec()
+            .then(doc => {
+              res.status(201).json({
+                message: "Created product succesfully",
+                userName: doc.name,
+                productId: result._id,
+                date: result.date,
+                user: result.user,
+                name: result.name,
+                request: {
+                  type: "GET",
+                  url: "http://localhost:3000/products/" + result._id
+                }
+              });
+            })
+            .catch(err => {
+              console.log(err);
+              res.status(500).json({ error: err });
+            });
         })
         .catch(err => {
           console.log(err);
