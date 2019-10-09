@@ -75,17 +75,14 @@ exports.products_create_product = (req, res, next) => {
         .then(result => {
           res.status(201).json({
             message: "Created product succesfully",
-            createdProduct: {
-              productId: result._id,
-              date: result.date,
-              user: result.user,
-              name: result.name,
-              price: result.price,
-              _id: result._id,
-              request: {
-                type: "GET",
-                url: "http://localhost:3000/products/" + result._id
-              }
+            productId: result._id,
+            date: result.date,
+            user: result.user,
+            name: result.name,
+            price: result.price,
+            request: {
+              type: "GET",
+              url: "http://localhost:3000/products/" + result._id
             }
           });
         })
