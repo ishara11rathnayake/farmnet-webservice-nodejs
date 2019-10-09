@@ -78,7 +78,7 @@ exports.products_create_product = (req, res, next) => {
             .then(doc => {
               res.status(201).json({
                 message: "Created product succesfully",
-                userName: doc.name,
+                userName: doc,
                 productId: result._id,
                 date: result.date,
                 user: result.user,
