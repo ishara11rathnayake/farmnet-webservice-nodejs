@@ -98,6 +98,30 @@ exports.advertisements_get_all = (req, res, next) => {
     });
 };
 
+// exports.advertisements_get_test = async (req, res, next) => {
+//   console.log("============");
+//   const id = req.params.userId;
+//   try {
+//     const user = await User.findById(id);
+//     if (user != null) {
+//       const docs = await Advertisement.find().select(
+//         "_id adTitle adDescription price adsImage contactNumber hashtags date user"
+//       );
+//       res.status(200).json({
+//         doc: docs
+//       });
+//     } else {
+//       res.status(200).json({
+//         err: "user not found"
+//       });
+//     }
+//   } catch (err) {
+//     res.status(500).json({
+//       error: err
+//     });
+//   }
+// };
+
 exports.advertisements_delete_advertisement = (res, req, next) => {
   const id = req.params.adsId;
   Advertisement.findById(id)

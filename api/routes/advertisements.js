@@ -65,4 +65,6 @@ router.get(
   AdvertisementController.advertisements_search_advertisement
 );
 
+// router.get("/get/:userId", AdvertisementController.advertisements_get_test);
+
 module.exports = router;
