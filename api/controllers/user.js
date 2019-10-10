@@ -69,6 +69,7 @@ exports.user_signup = (req, res, next) => {
                 res.status(201).json({
                   message: "User created",
                   userId: user._id,
+                  userType: user.user_type,
                   name: user.name,
                   token: token
                 });
@@ -114,6 +115,7 @@ exports.user_login = (req, res, next) => {
           );
           return res.status(200).json({
             userId: user[0]._id,
+            userType: user[0].user_type,
             message: "Auth successful",
             token: token
           });
