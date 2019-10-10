@@ -34,4 +34,10 @@ router.patch(
   QuestionController.questions_increase_no_of_answers
 );
 
+router.get(
+  "/byUser/:userId",
+  checkAuth,
+  QuestionController.questions_get_questions_by_userId
+);
+
 module.exports = router;

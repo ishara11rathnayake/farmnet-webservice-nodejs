@@ -241,3 +241,36 @@ exports.questions_increase_no_of_answers = (req, res, next) => {
 const escapeRegex = text => {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
+
+exports.questions_get_questions_by_userId = (req, res, next) => {
+  const userId = req.params.userId;
+  Question.find({ user: userId })
+    .select("_id question description hashtags date user numberOfAnswers")
+    .populate("user", "_id name profileImage")
+    .exec()
+    .then(docs => {
+      res.status(200).json({
+        count: docs.length,
+        questions: docs.map(doc => {
+          return {
+            _id: doc._id,
+            question: doc.question,
+            description: doc.description,
+            hashtags: doc.hashtags,
+            date: doc.date,
+            user: doc.user,
+            numberOfAnswers: doc.numberOfAnswers,
+            request: {
+              type: "GET",
+              url: "http://localhost:3000/questions/" + doc._id
+            }
+          };
+        })
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+};
