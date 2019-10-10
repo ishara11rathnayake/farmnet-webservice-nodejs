@@ -143,13 +143,14 @@ exports.questions_update_question = (req, res, next) => {
 
 exports.questions_delete_question = (req, res, next) => {
   const id = req.params.questionId;
+  const userId = req.params.userId;
   Question.findById(id)
     .select("user")
     .populate("user", "_id")
     .exec()
     .then(result => {
-      if (result.user._id != req.body.userId) {
-        res.status(500).json({
+      if (result.user._id != userId) {
+        res.status(200).json({
           message: "You don't have permission to delete this question."
         });
       } else {

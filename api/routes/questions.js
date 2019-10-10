@@ -11,7 +11,7 @@ router.post("/", checkAuth, QuestionController.questions_create_question);
 router.get("/:questionId", QuestionController.questions_get_question);
 
 router.delete(
-  "/:questionId",
+  "/:questionId/:userId",
   checkAuth,
   QuestionController.questions_delete_question
 );
