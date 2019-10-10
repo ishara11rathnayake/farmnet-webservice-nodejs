@@ -2,6 +2,29 @@ const Product = require("../models/product");
 const mongoose = require("mongoose");
 const User = require("../models/user");
 
+const multer = require("multer");
+const multerGoogleStorage = require("multer-google-storage");
+
+const storage = multerGoogleStorage.storageEngine({
+  filename: function(req, file, cb) {
+    cb(null, "product/" + Date.now() + file.originalname);
+  },
+  bucket: "farmnet-bucket",
+  projectId: "farmnet",
+  keyFilename: "./api/helpers/farmnet-45e7c587b679.json",
+  acl: "publicread",
+  contentType: function(req, file) {
+    return file.mimetype;
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  }
+}).single("productImage");
+
 exports.products_get_all = (req, res, next) => {
   Product.find()
     .select(
