@@ -134,31 +134,39 @@ exports.products_get_product = (req, res, next) => {
 };
 
 exports.products_update_product = (req, res, next) => {
-  const id = req.params.productId;
-  console.log(req.body);
-  const updateOps = {
-    productImage: req.file.path
-  };
-  for (const [key, value] of Object.entries(req.body)) {
-    updateOps[key] = value;
-  }
-  Product.updateOne({ _id: id }, { $set: updateOps })
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        message: "Product updated",
-        request: {
-          type: "GET",
-          url: "http://localhost:3000/products/" + id
-        }
+  let updateOps = {};
+
+  upload(req, res, err => {
+    if (req.file) {
+      updateOps = {
+        profileImage: req.file.path
+      };
+    }
+
+    const id = req.params.productId;
+
+    for (const [key, value] of Object.entries(req.body)) {
+      updateOps[key] = value;
+    }
+
+    Product.updateOne({ _id: id }, { $set: updateOps })
+      .exec()
+      .then(result => {
+        res.status(200).json({
+          message: "Product updated",
+          request: {
+            type: "GET",
+            url: "http://localhost:3000/products/" + id
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
-    });
+  });
 };
 
 exports.products_delete_product = (req, res, next) => {
