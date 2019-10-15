@@ -64,4 +64,10 @@ router.get(
   ProductController.products_search_product
 );
 
+router.get(
+  "/filter/bypriceandamount",
+  checkAuth,
+  ProductController.products_filter_product
+);
+
 module.exports = router;

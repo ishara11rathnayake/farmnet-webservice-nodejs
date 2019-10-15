@@ -275,3 +275,25 @@ exports.questions_get_questions_by_userId = (req, res, next) => {
       });
     });
 };
+
+exports.questions_get_paginate_question = (req, res, next) => {
+  const query = {};
+  const options = {
+    select: "_id question description hashtags date user numberOfAnswers",
+    populate: "user",
+    lean: true,
+    page: 1,
+    limit: 2
+  };
+  Question.paginate(query, options)
+    .then(result => {
+      res.status(200).json({
+        doc: result
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+};

@@ -40,4 +40,9 @@ router.get(
   QuestionController.questions_get_questions_by_userId
 );
 
+router.get(
+  "/paginate/get/get",
+  QuestionController.questions_get_paginate_question
+);
+
 module.exports = router;

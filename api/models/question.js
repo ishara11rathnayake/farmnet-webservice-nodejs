@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
 
 const questionSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
@@ -14,4 +15,5 @@ const questionSchema = mongoose.Schema({
   numberOfAnswers: { type: Number, default: 0 }
 });
 
+questionSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model("Question", questionSchema);
