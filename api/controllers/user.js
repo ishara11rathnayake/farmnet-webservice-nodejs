@@ -305,9 +305,9 @@ exports.users_change_pasword = (req, res, next) => {
             } else {
               User.updateOne({ _id: userId }, { $set: { password: hash } })
                 .then(result => {
-                  res.status(201).json({
+                  res.status(200).json({
                     message: "Password change successfully.",
-                    statusCode: "205"
+                    statusCode: "200"
                   });
                 })
                 .catch(err => {
@@ -320,7 +320,7 @@ exports.users_change_pasword = (req, res, next) => {
         } else {
           return res.status(200).json({
             message: "Old password mismatch",
-            statusCode: "200"
+            statusCode: "409"
           });
         }
       });
