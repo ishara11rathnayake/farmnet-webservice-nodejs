@@ -305,7 +305,7 @@ exports.users_change_pasword = (req, res, next) => {
             } else {
               User.updateOne({ _id: userId }, { $set: { password: hash } })
                 .then(result => {
-                  res.status(205).json({
+                  res.status(201).json({
                     message: "Password change successfully.",
                     statusCode: "205"
                   });
