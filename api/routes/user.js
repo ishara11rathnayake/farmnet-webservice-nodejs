@@ -18,4 +18,10 @@ router.patch("/rate/:userId", checkAuth, UserController.users_rate_user);
 
 router.get("/user/:userId", checkAuth, UserController.users_get_user_by_id);
 
+router.patch(
+  "/password/:userId",
+  checkAuth,
+  UserController.users_change_pasword
+);
+
 module.exports = router;

@@ -18,13 +18,28 @@ const articleRoutes = require("./api/routes/articles");
 const timelineRoutes = require("./api/routes/timelines");
 
 //connect to mongoDB
-mongoose.connect(
-  "mongodb+srv://ishara11rathnayake:" +
-    process.env.MONGO_ATLAS_PW +
-    "@node-shop-socjh.mongodb.net/test?retryWrites=true",
-  { useNewUrlParser: true }
-);
-mongoose.set("useCreateIndex", true);
+if (process.env.NODE_ENV === "test") {
+  const Mockgoose = require("mockgoose").Mockgoose;
+  const mockgoose = new Mockgoose(mongoose);
+
+  mockgoose.prepareStorage().then(() => {
+    mongoose.connect(
+      "mongodb+srv://ishara11rathnayake:" +
+        process.env.MONGO_ATLAS_PW +
+        "@node-shop-socjh.mongodb.net/test?retryWrites=true",
+      { useNewUrlParser: true }
+    );
+    mongoose.set("useCreateIndex", true);
+  });
+} else {
+  mongoose.connect(
+    "mongodb+srv://ishara11rathnayake:" +
+      process.env.MONGO_ATLAS_PW +
+      "@node-shop-socjh.mongodb.net/test?retryWrites=true",
+    { useNewUrlParser: true }
+  );
+  mongoose.set("useCreateIndex", true);
+}
 
 app.use(morgan("dev"));
 app.use("/uploads", express.static("uploads"));

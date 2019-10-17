@@ -281,3 +281,51 @@ exports.users_get_user_by_id = (req, res, next) => {
       res.status(500).json({ error: err });
     });
 };
+
+exports.users_change_pasword = (req, res, next) => {
+  const newPassword = req.body.newPassword;
+  const oldPassword = req.body.oldPassword;
+  const userId = req.params.userId;
+
+  User.findById(userId)
+    .exec()
+    .then(user => {
+      bcrypt.compare(oldPassword, user.password, (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            error: err
+          });
+        }
+        if (result) {
+          bcrypt.hash(newPassword, 10, (err, hash) => {
+            if (err) {
+              return res.status(500).json({
+                error: err
+              });
+            } else {
+              User.updateOne({ _id: userId }, { $set: { password: hash } })
+                .then(result => {
+                  res.status(200).json({
+                    message: "Password change successfully."
+                  });
+                })
+                .catch(err => {
+                  res.status(500).json({
+                    error: err
+                  });
+                });
+            }
+          });
+        } else {
+          return res.status(200).json({
+            message: "Old password mismatch"
+          });
+        }
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+};
