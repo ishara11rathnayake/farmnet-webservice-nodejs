@@ -4,7 +4,7 @@
   "description": "A Nod.js RESTful API (Build a simple shop API)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive --exit --timeout 1000000",
+    "test": "mocha --recursive --exit --timeout 120000",
     "start": "nodemon server.js"
   },
   "keywords": [
@@ -23,7 +23,6 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^6.2.1",
-    "mockgoose": "^8.0.3",
     "mongoose": "^5.5.10",
     "mongoose-paginate": "^5.0.3",
     "morgan": "^1.9.1",
@@ -32,6 +31,7 @@
     "supertest": "^4.0.2"
   },
   "devDependencies": {
+    "mockgoose": "^8.0.3",
     "nodemon": "^1.18.11"
   }
 }

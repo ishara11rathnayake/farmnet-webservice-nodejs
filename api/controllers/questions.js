@@ -55,7 +55,6 @@ exports.questions_create_question = (req, res, next) => {
       question
         .save()
         .then(result => {
-          console.log(result);
           res.status(201).json({
             message: "Question were created",
             createdQusetion: {
@@ -213,24 +212,29 @@ exports.quetions_search_question = (req, res, next) => {
 exports.questions_increase_no_of_answers = (req, res, next) => {
   const id = req.params.questionId;
   Question.findById(id)
-    .select("numberOfAnswers")
     .exec()
     .then(result => {
-      let noOfAnswers = result.numberOfAnswers + 1;
-      Question.updateOne(
-        { _id: id },
-        { $set: { numberOfAnswers: noOfAnswers } }
-      )
-        .then(doc => {
-          res.status(200).json({
-            message: "updated successfully"
+      if (result) {
+        let noOfAnswers = result.numberOfAnswers + 1;
+        Question.updateOne(
+          { _id: id },
+          { $set: { numberOfAnswers: noOfAnswers } }
+        )
+          .then(doc => {
+            res.status(200).json({
+              message: "updated successfully"
+            });
+          })
+          .catch(err => {
+            res.status(500).json({
+              error: err
+            });
           });
-        })
-        .catch(err => {
-          res.status(500).json({
-            error: err
-          });
+      } else {
+        res.status(404).json({
+          message: "Question not found."
         });
+      }
     })
     .catch(err => {
       res.status(500).json({
