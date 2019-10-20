@@ -28,7 +28,7 @@ const upload = multer({
 exports.products_get_all = (req, res, next) => {
   Product.find()
     .select(
-      "user name price _id productImage amount description location date timelineId"
+      "user name price _id productImage amount description location date timelineId latitude longitude"
     )
     .populate("user", "email name _id profileImage")
     .sort({ date: -1 })
@@ -48,6 +48,8 @@ exports.products_get_all = (req, res, next) => {
             user: doc.user,
             productImage: doc.productImage,
             timelineId: doc.timelineId,
+            latitude: doc.latitude,
+            longitude: doc.longitude,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
@@ -91,7 +93,9 @@ exports.products_create_product = (req, res, next) => {
         date: new Date(),
         user: req.body.userId,
         productImage: req.file.path,
-        timelineId: req.body.timelineId
+        timelineId: req.body.timelineId,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude
       });
 
       product
@@ -220,7 +224,7 @@ exports.products_search_product = (req, res, next) => {
   const regex = new RegExp(escapeRegex(searchText), "gi");
   Product.find({ $or: [{ name: regex }, { location: regex }] })
     .select(
-      "user name price _id productImage amount description location date timelineId"
+      "user name price _id productImage amount description location date timelineId latitude longitude"
     )
     .populate("user", "email name _id profileImage")
     .exec()
@@ -239,6 +243,8 @@ exports.products_search_product = (req, res, next) => {
             user: doc.user,
             productImage: doc.productImage,
             timelineId: doc.timelineId,
+            latitude: doc.latitude,
+            longitude: doc.longitude,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
@@ -284,7 +290,7 @@ exports.products_filter_product = (req, res, next) => {
 
   Product.find(query)
     .select(
-      "user name price _id productImage amount description location date timelineId"
+      "user name price _id productImage amount description location date timelineId latitude longitude"
     )
     .populate("user", "email name _id profileImage")
     .exec()
@@ -303,6 +309,8 @@ exports.products_filter_product = (req, res, next) => {
             user: doc.user,
             productImage: doc.productImage,
             timelineId: doc.timelineId,
+            latitude: doc.latitude,
+            longitude: doc.longitude,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id

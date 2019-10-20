@@ -17,7 +17,9 @@ const productSchema = mongoose.Schema({
   timelineId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Timeline"
-  }
+  },
+  latitude: { type: Number, required: true },
+  longitude: { type: Number, required: true }
 });
 
 module.exports = mongoose.model("Product", productSchema);
