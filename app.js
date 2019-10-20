@@ -17,8 +17,8 @@ const complaintRoutes = require("./api/routes/complaints");
 const articleRoutes = require("./api/routes/articles");
 const timelineRoutes = require("./api/routes/timelines");
 
-const Mockgoose = require("mockgoose").Mockgoose;
-const mockgoose = new Mockgoose(mongoose);
+// const Mockgoose = require("mockgoose").Mockgoose;
+// const mockgoose = new Mockgoose(mongoose);
 
 // if (process.env.NODE_ENV === "test") {
 //   mockgoose.helper
