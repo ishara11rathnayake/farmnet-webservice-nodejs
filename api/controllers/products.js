@@ -72,6 +72,7 @@ exports.products_get_all = (req, res, next) => {
 };
 
 exports.products_create_product = (req, res, next) => {
+  console.log(req.body.userId);
   User.findById(req.body.userId)
     .then(user => {
       if (!user) {
