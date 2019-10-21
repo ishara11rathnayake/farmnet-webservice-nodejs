@@ -70,4 +70,6 @@ router.get(
   ProductController.products_filter_product
 );
 
+router.patch("/like/like", checkAuth, ProductController.products_add_like);
+
 module.exports = router;

@@ -28,7 +28,7 @@ const upload = multer({
 exports.products_get_all = (req, res, next) => {
   Product.find()
     .select(
-      "user name price _id productImage amount description location date timelineId latitude longitude"
+      "user name price _id productImage amount description location date timelineId latitude longitude likes"
     )
     .populate("user", "email name _id profileImage")
     .sort({ date: -1 })
@@ -161,6 +161,9 @@ exports.products_get_product = (req, res, next) => {
     });
 };
 
+/**
+ * update product
+ */
 exports.products_update_product = (req, res, next) => {
   let updateOps = {};
 
@@ -197,6 +200,9 @@ exports.products_update_product = (req, res, next) => {
   });
 };
 
+/**
+ * delete product
+ */
 exports.products_delete_product = (req, res, next) => {
   const id = req.params.productId;
   Product.deleteOne({ _id: id })
@@ -336,4 +342,44 @@ exports.products_filter_product = (req, res, next) => {
 
 const escapeRegex = text => {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+exports.products_add_like = (req, res, next) => {
+  const productId = req.query.productId;
+  const userId = req.query.userId;
+  Product.findById(productId)
+    .exec()
+    .then(result => {
+      if (result) {
+        let alreadyliked = result.likes.includes(userId);
+        console.log(alreadyliked);
+        let likes = [];
+        if (!alreadyliked) {
+          console.log(userId);
+          likes = result.likes;
+          likes.push(userId);
+        }
+        console.log(likes);
+        Product.updateOne({ _id: productId }, { $set: { likes: likes } })
+          .then(doc => {
+            res.status(200).json({
+              message: "updated successfully"
+            });
+          })
+          .catch(err => {
+            res.status(500).json({
+              error: err
+            });
+          });
+      } else {
+        res.status(404).json({
+          message: "Product not found."
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
 };
