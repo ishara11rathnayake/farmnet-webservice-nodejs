@@ -358,6 +358,10 @@ exports.products_add_like = (req, res, next) => {
           console.log(userId);
           likes = result.likes;
           likes.push(userId);
+        } else {
+          likes = result.likes.filter(like => {
+            return like != userId;
+          });
         }
         console.log(likes);
         Product.updateOne({ _id: productId }, { $set: { likes: likes } })
