@@ -53,6 +53,7 @@ exports.products_get_all = (req, res, next) => {
             latitude: doc.latitude,
             longitude: doc.longitude,
             like: like,
+            likeCount: doc.likes.length,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
@@ -256,6 +257,7 @@ exports.products_search_product = (req, res, next) => {
             latitude: doc.latitude,
             longitude: doc.longitude,
             like: like,
+            likeCount: doc.likes.length,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
@@ -323,6 +325,7 @@ exports.products_filter_product = (req, res, next) => {
             latitude: doc.latitude,
             longitude: doc.longitude,
             like: like,
+            likeCount: doc.likes.length,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
