@@ -26,6 +26,7 @@ const upload = multer({
 }).single("productImage");
 
 exports.products_get_all = (req, res, next) => {
+  const userId = req.query.userId;
   Product.find()
     .select(
       "user name price _id productImage amount description location date timelineId latitude longitude likes"
@@ -37,6 +38,7 @@ exports.products_get_all = (req, res, next) => {
       const response = {
         count: docs.length,
         products: docs.map(doc => {
+          const like = doc.likes.includes(userId);
           return {
             _id: doc._id,
             name: doc.name,
@@ -50,6 +52,7 @@ exports.products_get_all = (req, res, next) => {
             timelineId: doc.timelineId,
             latitude: doc.latitude,
             longitude: doc.longitude,
+            like: like,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
@@ -238,6 +241,7 @@ exports.products_search_product = (req, res, next) => {
       const response = {
         count: docs.length,
         products: docs.map(doc => {
+          const like = doc.likes.includes(userId);
           return {
             _id: doc._id,
             name: doc.name,
@@ -251,6 +255,7 @@ exports.products_search_product = (req, res, next) => {
             timelineId: doc.timelineId,
             latitude: doc.latitude,
             longitude: doc.longitude,
+            like: like,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
@@ -317,6 +322,7 @@ exports.products_filter_product = (req, res, next) => {
             timelineId: doc.timelineId,
             latitude: doc.latitude,
             longitude: doc.longitude,
+            like: like,
             request: {
               type: "GET",
               url: "http://localhost:3000/products/" + doc._id
