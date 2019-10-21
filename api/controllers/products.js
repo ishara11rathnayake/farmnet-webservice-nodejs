@@ -311,6 +311,7 @@ exports.products_filter_product = (req, res, next) => {
       const response = {
         count: docs.length,
         products: docs.map(doc => {
+          const like = doc.likes.includes(userId);
           return {
             _id: doc._id,
             name: doc.name,
