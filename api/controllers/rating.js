@@ -4,9 +4,9 @@ const User = require("../models/user");
 const Rating = require("../models/rating");
 
 exports.rating_rate_users = (req, res, next) => {
-  userId = req.params.userId;
-  ratedUserId = req.params.ratedUserId;
-  rating = req.params.ratingScore;
+  const userId = req.params.userId;
+  const ratedUserId = req.params.ratedUserId;
+  const rating = req.params.ratingScore;
 
   Rating.find({ userId: userId, ratedUserId: ratedUserId })
     .select("_id")
@@ -83,8 +83,8 @@ exports.ratings_get_rating = (req, res, next) => {
 };
 
 exports.ratings_get_rated_user_rating = (req, res, next) => {
-  userId = req.params.userId;
-  ratedUserId = req.params.ratedUserId;
+  const userId = req.params.userId;
+  const ratedUserId = req.params.ratedUserId;
   Rating.find({ userId: userId, ratedUserId: ratedUserId })
     .select("ratingScore")
     .exec()
