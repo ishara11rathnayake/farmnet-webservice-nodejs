@@ -6,6 +6,7 @@ exports.questions_get_all = (req, res, next) => {
   Question.find()
     .select("_id question description hashtags date user numberOfAnswers")
     .populate("user", "_id name profileImage")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       res.status(200).json({
@@ -181,6 +182,7 @@ exports.quetions_search_question = (req, res, next) => {
   Question.find({ $or: [{ hashtags: regex }, { question: regex }] })
     .select("_id question description hashtags date user numberOfAnswers")
     .populate("user", "_id name profileImage")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       res.status(200).json({
@@ -252,6 +254,7 @@ exports.questions_get_questions_by_userId = (req, res, next) => {
   Question.find({ user: userId })
     .select("_id question description hashtags date user numberOfAnswers")
     .populate("user", "_id name profileImage")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       res.status(200).json({

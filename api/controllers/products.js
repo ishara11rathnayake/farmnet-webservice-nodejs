@@ -237,6 +237,7 @@ exports.products_search_product = (req, res, next) => {
       "user name price _id productImage amount description location date timelineId latitude longitude"
     )
     .populate("user", "email name _id profileImage")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       const response = {
@@ -306,6 +307,7 @@ exports.products_filter_product = (req, res, next) => {
       "user name price _id productImage amount description location date timelineId latitude longitude"
     )
     .populate("user", "email name _id profileImage")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       const response = {

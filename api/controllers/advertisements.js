@@ -68,6 +68,7 @@ exports.advertisements_get_all = (req, res, next) => {
       "_id adTitle adDescription price adsImage contactNumber hashtags date user"
     )
     .populate("user", "_id name profileImage email")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       res.status(200).json({
@@ -219,6 +220,7 @@ exports.advertisements_search_advertisement = (req, res, next) => {
       "_id adTitle adDescription price adsImage contactNumber hashtags date user"
     )
     .populate("user", "_id name profileImage email")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       res.status(200).json({

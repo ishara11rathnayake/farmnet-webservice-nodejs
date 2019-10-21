@@ -24,4 +24,6 @@ router.patch(
   UserController.users_change_pasword
 );
 
+router.get("/search/byname", checkAuth, UserController.users_search_user);
+
 module.exports = router;

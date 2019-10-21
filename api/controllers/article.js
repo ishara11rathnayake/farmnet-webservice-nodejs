@@ -52,6 +52,7 @@ exports.articles_get_all_articles = (req, res, next) => {
   Article.find()
     .select("_id userId articleTitle content thumbnailUrl date")
     .populate("userId", "_id name profileImage")
+    .sort({ date: -1 })
     .exec()
     .then(docs => {
       const response = {

@@ -329,3 +329,49 @@ exports.users_change_pasword = (req, res, next) => {
       });
     });
 };
+
+exports.users_search_user = (req, res, next) => {
+  const searchText = req.query.searchText;
+  const minRating = req.query.minRating;
+  const regex = new RegExp(escapeRegex(searchText), "gi");
+
+  const query = {
+    $and: [
+      { rating: { $gt: minRating } },
+      { $or: [{ name: regex }, { email: regex }] }
+    ]
+  };
+
+  User.find(query)
+    .select("_id name user_type profileImage rating")
+    .sort({ name: 1 })
+    .exec()
+    .then(docs => {
+      res.status(200).json({
+        count: docs.length,
+        users: docs.map(doc => {
+          return {
+            _id: doc._id,
+            name: doc.name,
+            user_type: doc.user_type,
+            profileImage: doc.profileImage,
+            rating: doc.rating,
+            request: {
+              type: "GET",
+              url:
+                "https://farmnet-app-webservice.herokuapp.com/user/" + doc._id
+            }
+          };
+        })
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+};
+
+const escapeRegex = text => {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
