@@ -14,7 +14,7 @@ router.patch("/:userId", checkAuth, UserController.users_update_user);
 
 router.get("/:userId", checkAuth, UserController.users_get_user);
 
-router.patch("/rate/:userId", checkAuth, UserController.users_rate_user);
+// router.patch("/rate/:userId", checkAuth, UserController.users_rate_user);
 
 router.get("/user/:userId", checkAuth, UserController.users_get_user_by_id);
 

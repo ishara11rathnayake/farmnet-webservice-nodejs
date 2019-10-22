@@ -19,6 +19,7 @@ exports.rating_rate_users = (req, res, next) => {
         )
           .exec()
           .then(results => {
+            update_rating(userId);
             res.status(200).json({
               message: "Successfully rated."
             });
@@ -40,6 +41,7 @@ exports.rating_rate_users = (req, res, next) => {
         ratingObject
           .save()
           .then(results => {
+            update_rating(userId);
             res.status(200).json({
               message: "Successfully rated."
             });
@@ -105,4 +107,29 @@ exports.ratings_get_rated_user_rating = (req, res, next) => {
         error: err
       });
     });
+};
+
+const update_rating = async userId => {
+  try {
+    const ratingResults = await Rating.find({ userId: userId });
+    if (ratingResults != null) {
+      let sum = 0;
+      const count = ratingResults.length;
+      ratingResults.forEach(item => {
+        sum += item.ratingScore;
+      });
+      const ratings = sum / count;
+
+      const updateResults = await User.updateOne(
+        { _id: userId },
+        { $set: { rating: ratings } }
+      );
+
+      if (updateResults != null) {
+        console.log("Success");
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
