@@ -70,6 +70,7 @@ exports.user_signup = (req, res, next) => {
                   userId: user._id,
                   userType: user.user_type,
                   name: user.name,
+                  email: user.email,
                   token: token
                 });
               })
@@ -115,6 +116,8 @@ exports.user_login = (req, res, next) => {
           return res.status(200).json({
             userId: user[0]._id,
             userType: user[0].user_type,
+            name: user[0].name,
+            email: user[0].email,
             message: "Auth successful",
             token: token
           });
@@ -168,6 +171,9 @@ exports.users_update_user = (req, res, next) => {
       .then(result => {
         res.status(200).json({
           message: "User updated",
+          name: result.name,
+          email: result.email,
+          profileImage: result.profileImage,
           request: {
             type: "GET",
             url: "http://localhost:3000/users/" + id
