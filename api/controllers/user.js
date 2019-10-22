@@ -344,7 +344,7 @@ exports.users_search_user = (req, res, next) => {
 
   const query = {
     $and: [
-      { rating: { $gt: minRating } },
+      { rating: { $gte: minRating } },
       { $or: [{ name: regex }, { email: regex }] }
     ]
   };
