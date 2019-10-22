@@ -118,6 +118,7 @@ exports.user_login = (req, res, next) => {
             userType: user[0].user_type,
             name: user[0].name,
             email: user[0].email,
+            profileImage: user[0].profileImage,
             message: "Auth successful",
             token: token
           });
