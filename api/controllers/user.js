@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 const Product = require("../models/product");
+const Article = require("../models/article");
+const Advertisement = require("../models/advertisement");
 
 const multer = require("multer");
 const multerGoogleStorage = require("multer-google-storage");
@@ -239,26 +241,21 @@ exports.users_get_user = (req, res, next) => {
     .exec()
     .then(doc => {
       if (doc) {
-        Product.find({ user: id })
-          .select(
-            "user name price _id productImage amount description location date timelineId"
-          )
-          .populate("user", "email name _id profileImage")
-          .exec()
-          .then(result => {
-            res.status(200).json({
-              user: doc,
-              product: result,
-              request: {
-                type: "GET",
-                description: "GET_USER"
-              }
-            });
-          })
-          .catch(err => {
-            console.log(err);
-            res.status(500).json({ error: err });
+        if (doc.user_type === "Farmer") {
+          get_deals_of_farmers(res, id, doc);
+        } else if (doc.user_type === "Knowledge Provider") {
+          get_article_of_knowledge_providers(res, id, doc);
+        } else if (doc.user_type === "Agri Service Provider") {
+          get_ads_of_service_provider(res, id, doc);
+        } else {
+          res.status(200).json({
+            user: doc,
+            request: {
+              type: "GET",
+              description: "GET_BUYER_DETAILS"
+            }
           });
+        }
       } else {
         res.status(404).json({
           message: "No valid entry found for provided ID"
@@ -381,4 +378,71 @@ exports.users_search_user = (req, res, next) => {
 
 const escapeRegex = text => {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+const get_deals_of_farmers = async (res, userId, doc) => {
+  try {
+    const result = await Product.find({ user: userId })
+      .select(
+        "user name price _id productImage amount description location date timelineId latitude longitude likes"
+      )
+      .populate("user", "email name _id profileImage")
+      .sort({ date: -1 });
+
+    res.status(200).json({
+      user: doc,
+      product: result,
+      request: {
+        type: "GET",
+        description: "GET_USER"
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+const get_article_of_knowledge_providers = async (res, userId, doc) => {
+  try {
+    const result = await Article.find({ userId: userId })
+      .select("_id userId articleTitle content thumbnailUrl date")
+      .populate("userId", "_id name profileImage")
+      .sort({ date: -1 });
+
+    res.status(200).json({
+      user: doc,
+      product: result,
+      request: {
+        type: "GET",
+        description: "GET_ARTICLE"
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+const get_ads_of_service_provider = async (res, userId, doc) => {
+  try {
+    const result = await Advertisement.find({ user: userId })
+      .select(
+        "_id adTitle adDescription price adsImage contactNumber hashtags date user"
+      )
+      .populate("user", "_id name profileImage email")
+      .sort({ date: -1 });
+
+    res.status(200).json({
+      user: doc,
+      product: result,
+      request: {
+        type: "GET",
+        description: "GET_ADVERTISEMENTS"
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
 };
