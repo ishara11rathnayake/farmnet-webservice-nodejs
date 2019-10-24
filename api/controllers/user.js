@@ -391,7 +391,7 @@ const get_deals_of_farmers = async (res, userId, doc) => {
 
     res.status(200).json({
       user: doc,
-      product: result,
+      deals: result,
       request: {
         type: "GET",
         description: "GET_USER"
@@ -412,7 +412,7 @@ const get_article_of_knowledge_providers = async (res, userId, doc) => {
 
     res.status(200).json({
       user: doc,
-      product: result,
+      articles: result,
       request: {
         type: "GET",
         description: "GET_ARTICLE"
@@ -435,7 +435,7 @@ const get_ads_of_service_provider = async (res, userId, doc) => {
 
     res.status(200).json({
       user: doc,
-      product: result,
+      advertisements: result,
       request: {
         type: "GET",
         description: "GET_ADVERTISEMENTS"
