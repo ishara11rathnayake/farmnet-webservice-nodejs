@@ -20,9 +20,16 @@ exports.rating_rate_users = (req, res, next) => {
           .exec()
           .then(results => {
             update_rating(userId);
-            res.status(200).json({
-              message: "Successfully rated."
-            });
+            calculateUserRating(userId)
+              .then(rate => {
+                res.status(200).json({
+                  message: "Successfully rated.",
+                  rate: rate
+                });
+              })
+              .catch(err => {
+                console.log(err);
+              });
           })
           .catch(err => {
             console.log(err);
@@ -42,9 +49,16 @@ exports.rating_rate_users = (req, res, next) => {
           .save()
           .then(results => {
             update_rating(userId);
-            res.status(200).json({
-              message: "Successfully rated."
-            });
+            calculateUserRating(userId)
+              .then(rate => {
+                res.status(200).json({
+                  message: "Successfully rated.",
+                  rate: rate
+                });
+              })
+              .catch(err => {
+                console.log(err);
+              });
           })
           .catch(err => {
             console.log(err);
@@ -132,4 +146,17 @@ const update_rating = async userId => {
   } catch (err) {
     console.log(err);
   }
+};
+
+const calculateUserRating = async userId => {
+  const ratingResults = await Rating.find({ userId: userId });
+  if (ratingResults.length > 0) {
+    let sum = 0;
+    const count = ratingResults.length;
+    ratingResults.forEach(item => {
+      sum += item.ratingScore;
+    });
+    return sum / count;
+  }
+  return 0;
 };
