@@ -283,24 +283,39 @@ exports.questions_get_questions_by_userId = (req, res, next) => {
     });
 };
 
-exports.questions_get_paginate_question = (req, res, next) => {
-  const query = {};
-  const options = {
-    select: "_id question description hashtags date user numberOfAnswers",
-    populate: "user",
-    lean: true,
-    page: 1,
-    limit: 2
-  };
-  Question.paginate(query, options)
-    .then(result => {
-      res.status(200).json({
-        doc: result
-      });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
+exports.questions_get_paginate_question = async (req, res, next) => {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit) : 2;
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const questions = await Question.find()
+      .select("_id question description hashtags date user numberOfAnswers")
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate("user", "_id name profileImage")
+      .sort({ date: -1 });
+
+    res.status(200).json({
+      count: questions.length,
+      questions: questions.map(doc => {
+        return {
+          _id: doc._id,
+          question: doc.question,
+          description: doc.description,
+          hashtags: doc.hashtags,
+          date: doc.date,
+          user: doc.user,
+          numberOfAnswers: doc.numberOfAnswers,
+          request: {
+            type: "GET",
+            url: "http://localhost:3000/questions/" + doc._id
+          }
+        };
+      })
     });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      error: err
+    });
+  }
 };
