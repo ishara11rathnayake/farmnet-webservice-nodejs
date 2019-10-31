@@ -47,12 +47,19 @@ const timelineRoutes = require("./api/routes/timelines");
 //       });
 //   });
 // } else {
-mongoose.connect(
-  "mongodb+srv://ishara11rathnayake:" +
-    process.env.MONGO_ATLAS_PW +
-    "@node-shop-socjh.mongodb.net/test?retryWrites=true",
-  { useNewUrlParser: true, useCreateIndex: true }
-);
+mongoose
+  .connect(
+    "mongodb+srv://ishara11rathnayake:" +
+      process.env.MONGO_ATLAS_PW +
+      "@node-shop-socjh.mongodb.net/test?retryWrites=true",
+    { useNewUrlParser: true, useCreateIndex: true }
+  )
+  .then(() => {
+    console.log("Database connected successfully");
+  })
+  .catch(err => {
+    console.log(err);
+  });
 // }
 // mongoose.set("useCreateIndex", true);
 

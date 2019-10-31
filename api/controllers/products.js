@@ -232,9 +232,10 @@ exports.products_delete_product = (req, res, next) => {
 exports.products_search_product = (req, res, next) => {
   const searchText = req.params.searchText;
   const regex = new RegExp(escapeRegex(searchText), "gi");
+  const userId = req.userData.userId;
   Product.find({ $or: [{ name: regex }, { location: regex }] })
     .select(
-      "user name price _id productImage amount description location date timelineId latitude longitude"
+      "user name price _id productImage amount description location date timelineId latitude longitude likes"
     )
     .populate("user", "email name _id profileImage")
     .sort({ date: -1 })
@@ -287,6 +288,7 @@ exports.products_filter_product = (req, res, next) => {
   const minPice = req.query.minprice;
   const maxAmount = req.query.maxAmount;
   const minAmount = req.query.minAmount;
+  const userId = req.userData.userId;
 
   let query = {};
   if (maxPice != 0 && minPice != 0 && maxAmount != 0 && minAmount != 0) {
@@ -304,7 +306,7 @@ exports.products_filter_product = (req, res, next) => {
 
   Product.find(query)
     .select(
-      "user name price _id productImage amount description location date timelineId latitude longitude"
+      "user name price _id productImage amount description location date timelineId latitude longitude likes"
     )
     .populate("user", "email name _id profileImage")
     .sort({ date: -1 })

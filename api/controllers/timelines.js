@@ -66,7 +66,8 @@ exports.timelines_create_timeline = (req, res, next) => {
           .save()
           .then(results => {
             res.status(200).json({
-              message: "Created timeline succesfully"
+              message: "Created timeline succesfully",
+              timeline: results
             });
           })
           .catch(err => {
