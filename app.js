@@ -17,50 +17,50 @@ const complaintRoutes = require("./api/routes/complaints");
 const articleRoutes = require("./api/routes/articles");
 const timelineRoutes = require("./api/routes/timelines");
 
-// const Mockgoose = require("mockgoose").Mockgoose;
-// const mockgoose = new Mockgoose(mongoose);
+const Mockgoose = require("mockgoose").Mockgoose;
+const mockgoose = new Mockgoose(mongoose);
 
-// if (process.env.NODE_ENV === "test") {
-//   mockgoose.helper
-//     .reset()
-//     .then(() => {
-//       console.log("Db is erased");
-//     })
-//     .catch(err => {
-//       console.log("db is errrors", err);
-//       if (err) t.fail("Unable to reset test database");
-//     });
+if (process.env.NODE_ENV === "test") {
+  mockgoose.helper
+    .reset()
+    .then(() => {
+      console.log("Db is erased");
+    })
+    .catch(err => {
+      console.log("db is errrors", err);
+      if (err) t.fail("Unable to reset test database");
+    });
 
-//   mockgoose.prepareStorage().then(() => {
-//     mongoose
-//       .connect(
-//         "mongodb+srv://ishara11rathnayake:" +
-//           process.env.MONGO_ATLAS_PW +
-//           "@node-shop-socjh.mongodb.net/test?retryWrites=true",
-//         { useNewUrlParser: true, useCreateIndex: true }
-//       )
-//       .then(() => {
-//         console.log("Db is connected");
-//       })
-//       .catch(err => {
-//         console.log("db is errrors", err);
-//       });
-//   });
-// } else {
-mongoose
-  .connect(
-    "mongodb+srv://ishara11rathnayake:" +
-      process.env.MONGO_ATLAS_PW +
-      "@node-shop-socjh.mongodb.net/test?retryWrites=true",
-    { useNewUrlParser: true, useCreateIndex: true }
-  )
-  .then(() => {
-    console.log("Database connected successfully");
-  })
-  .catch(err => {
-    console.log(err);
+  mockgoose.prepareStorage().then(() => {
+    mongoose
+      .connect(
+        "mongodb+srv://ishara11rathnayake:" +
+          process.env.MONGO_ATLAS_PW +
+          "@node-shop-socjh.mongodb.net/test?retryWrites=true",
+        { useNewUrlParser: true, useCreateIndex: true }
+      )
+      .then(() => {
+        console.log("Db is connected");
+      })
+      .catch(err => {
+        console.log("db is errrors", err);
+      });
   });
-// }
+} else {
+  mongoose
+    .connect(
+      "mongodb+srv://ishara11rathnayake:" +
+        process.env.MONGO_ATLAS_PW +
+        "@node-shop-socjh.mongodb.net/test?retryWrites=true",
+      { useNewUrlParser: true, useCreateIndex: true }
+    )
+    .then(() => {
+      console.log("Database connected successfully");
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
 // mongoose.set("useCreateIndex", true);
 
 app.use(morgan("dev"));

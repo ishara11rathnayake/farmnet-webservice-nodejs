@@ -4,7 +4,8 @@
   "description": "A Nod.js RESTful API (Build a simple shop API)",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "mocha --recursive --exit --timeout 120000"
   },
   "keywords": [
     "node",
